@@ -1,0 +1,7 @@
+en:
+  site_settings:
+    discourse_to_markdown_enabled: "Serve Discourse content as Markdown via Accept negotiation and .md URLs."
+    discourse_to_markdown_md_urls_enabled: "Accept `.md` URL suffixes (e.g. /t/slug/123.md) as a sibling to the HTML route."
+    discourse_to_markdown_strict_accept: "Return 406 Not Acceptable when the client's Accept header excludes both text/html and text/markdown."
+    discourse_to_markdown_emit_vary: "Append `Accept` to the `Vary` response header on every front-end response so caches key correctly."
+    discourse_to_markdown_include_post_metadata: "Include title, URL, category, tags, author, and timestamps in the Markdown representation."

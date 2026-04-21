@@ -1,0 +1,6 @@
+en:
+  admin_js:
+    admin:
+      site_settings:
+        categories:
+          discourse_to_markdown: "Discourse to Markdown"

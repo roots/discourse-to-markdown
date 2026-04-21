@@ -1,0 +1,16 @@
+discourse_to_markdown:
+  discourse_to_markdown_enabled:
+    default: false
+    client: true
+  discourse_to_markdown_md_urls_enabled:
+    default: true
+    client: false
+  discourse_to_markdown_strict_accept:
+    default: false
+    client: false
+  discourse_to_markdown_emit_vary:
+    default: true
+    client: false
+  discourse_to_markdown_include_post_metadata:
+    default: true
+    client: false
