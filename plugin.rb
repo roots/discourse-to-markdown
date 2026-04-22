@@ -2,6 +2,7 @@
 
 # name: discourse-to-markdown
 # about: Serve Discourse content as Markdown via Accept negotiation and .md URLs
+# meta_topic_id: 401199
 # version: 0.1.0
 # authors: Ben Word
 # url: https://github.com/roots/discourse-to-markdown
