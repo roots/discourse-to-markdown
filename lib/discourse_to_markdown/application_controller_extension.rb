@@ -46,7 +46,7 @@ module DiscourseToMarkdown
       return if AcceptHeader.quality(accept, "text", "html").positive?
       return if AcceptHeader.quality(accept, "text", "markdown").positive?
 
-      response.headers["Vary"] = "Accept" if response.headers["Vary"].to_s.exclude?("Accept")
+      ensure_vary_accept
       render plain: "Available representations: text/html, text/markdown\n",
              status: :not_acceptable,
              content_type: "text/plain"
@@ -70,8 +70,19 @@ module DiscourseToMarkdown
     # the patched controllers instead of `render plain: ..., content_type:`
     # directly — this wraps both concerns in one place.
     def render_markdown(body)
-      response.headers["Vary"] = "Accept" if response.headers["Vary"].to_s.exclude?("Accept")
+      ensure_vary_accept
       render plain: body, content_type: "text/markdown"
+    end
+
+    # Append `Accept` to the Vary header, idempotently and gated on the
+    # `discourse_to_markdown_emit_vary` site setting — admins running a
+    # reverse proxy that manages Vary themselves can opt out.
+    def ensure_vary_accept
+      return unless SiteSetting.discourse_to_markdown_emit_vary
+      return if response.headers["Vary"].to_s.include?("Accept")
+
+      existing = response.headers["Vary"].to_s
+      response.headers["Vary"] = existing.empty? ? "Accept" : "#{existing}, Accept"
     end
   end
 end

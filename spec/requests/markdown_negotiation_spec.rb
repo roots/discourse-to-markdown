@@ -169,6 +169,12 @@ RSpec.describe "Markdown negotiation" do
       get "/latest.md"
       expect(response.headers["Vary"].to_s).to include("Accept")
     end
+
+    it "omits Vary: Accept when the emit_vary setting is off" do
+      SiteSetting.discourse_to_markdown_emit_vary = false
+      get "/latest.md"
+      expect(response.headers["Vary"].to_s).not_to include("Accept")
+    end
   end
 
   describe "homepage" do

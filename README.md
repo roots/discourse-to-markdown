@@ -106,7 +106,7 @@ All settings live under Admin → Settings → Plugins.
 | `discourse_to_markdown_enabled` | `false` | Master switch for the plugin |
 | `discourse_to_markdown_md_urls_enabled` | `true` | Accept `.md` URL suffixes as a sibling to the HTML route |
 | `discourse_to_markdown_strict_accept` | `false` | Return `406 Not Acceptable` when the client's `Accept` header excludes both `text/html` and `text/markdown` |
-| `discourse_to_markdown_emit_vary` | `true` | Reserved; Discourse already emits `Vary: Accept` on every front-end response |
+| `discourse_to_markdown_emit_vary` | `true` | Emit `Vary: Accept` on Markdown and `406` responses so caches don't cross-serve representations. Disable if your reverse proxy manages `Vary` itself |
 | `discourse_to_markdown_include_post_metadata` | `true` | Include URL, category, tags, author, timestamps in the Markdown representation |
 
 ## Conversion notes
