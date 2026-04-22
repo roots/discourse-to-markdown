@@ -161,6 +161,15 @@ RSpec.describe "Markdown negotiation" do
     end
   end
 
+  describe "homepage" do
+    it "GET / with Accept: text/markdown returns the configured homepage list" do
+      get "/", headers: { "Accept" => "text/markdown" }
+
+      expect(response.status).to eq(200)
+      expect(response.media_type).to eq("text/markdown")
+    end
+  end
+
   describe "category route" do
     it "/c/:slug/:id.md returns a category topic list" do
       get "/c/#{category.slug}/#{category.id}.md"
