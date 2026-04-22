@@ -46,6 +46,7 @@ module DiscourseToMarkdown
       return if AcceptHeader.quality(accept, "text", "html").positive?
       return if AcceptHeader.quality(accept, "text", "markdown").positive?
 
+      response.headers["Vary"] = "Accept" if response.headers["Vary"].to_s.exclude?("Accept")
       render plain: "Available representations: text/html, text/markdown\n",
              status: :not_acceptable,
              content_type: "text/plain"
@@ -62,6 +63,15 @@ module DiscourseToMarkdown
       link = %(<#{markdown_alternate_url_for}>; rel="alternate"; type="text/markdown")
       existing = response.headers["Link"]
       response.headers["Link"] = existing ? "#{existing}, #{link}" : link
+    end
+
+    # Renders the given Markdown body and ensures `Vary: Accept` is set so
+    # caches don't cross-serve HTML and Markdown representations. Call from
+    # the patched controllers instead of `render plain: ..., content_type:`
+    # directly — this wraps both concerns in one place.
+    def render_markdown(body)
+      response.headers["Vary"] = "Accept" if response.headers["Vary"].to_s.exclude?("Accept")
+      render plain: body, content_type: "text/markdown"
     end
   end
 end

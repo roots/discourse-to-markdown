@@ -159,6 +159,16 @@ RSpec.describe "Markdown negotiation" do
         expect(response.media_type).to eq("text/markdown")
       end
     end
+
+    it "/latest + Accept: text/markdown emits Vary: Accept so caches don't cross-serve" do
+      get "/latest", headers: { "Accept" => "text/markdown" }
+      expect(response.headers["Vary"].to_s).to include("Accept")
+    end
+
+    it "/latest.md emits Vary: Accept" do
+      get "/latest.md"
+      expect(response.headers["Vary"].to_s).to include("Accept")
+    end
   end
 
   describe "homepage" do
@@ -167,6 +177,11 @@ RSpec.describe "Markdown negotiation" do
 
       expect(response.status).to eq(200)
       expect(response.media_type).to eq("text/markdown")
+    end
+
+    it "GET / with Accept: text/markdown emits Vary: Accept" do
+      get "/", headers: { "Accept" => "text/markdown" }
+      expect(response.headers["Vary"].to_s).to include("Accept")
     end
   end
 
@@ -223,6 +238,13 @@ RSpec.describe "Markdown negotiation" do
 
     it "returns 406 when Accept excludes both text/html and text/markdown" do
       get "/t/#{topic.slug}/#{topic.id}", headers: { "Accept" => "application/octet-stream" }
+
+      expect(response.status).to eq(406)
+      expect(response.body).to include("Available representations: text/html, text/markdown")
+    end
+
+    it "returns 406 for `/` too, not just topic routes" do
+      get "/", headers: { "Accept" => "application/octet-stream" }
 
       expect(response.status).to eq(406)
       expect(response.body).to include("Available representations: text/html, text/markdown")

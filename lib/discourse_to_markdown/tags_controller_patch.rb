@@ -30,14 +30,14 @@ module DiscourseToMarkdown
           query.public_send("list_#{filter_name}")
         end
 
-      render plain:
-               TopicListRenderer.render(
-                 topics: list.topics,
-                 title: tag_list_title(filter_name),
-                 request_path: request.path,
-                 page: params[:page],
-               ),
-             content_type: "text/markdown"
+      render_markdown(
+        TopicListRenderer.render(
+          topics: list.topics,
+          title: tag_list_title(filter_name),
+          request_path: request.path,
+          page: params[:page],
+        ),
+      )
     end
 
     def resolve_tag_filter_name

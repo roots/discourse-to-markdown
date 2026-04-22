@@ -17,6 +17,16 @@ end
 
 require_relative "lib/discourse_to_markdown/engine"
 
+# Rails' `root` macro with a HomePageConstraint matches only when the
+# request resolves to an HTML representation. Any other Accept header
+# (text/markdown, application/octet-stream, etc.) falls through to
+# Rails' default WelcomeController, bypassing our controller patches.
+# Append a plain fallback that dispatches `/` to the `latest` filter
+# when no core root route matched, so the plugin's before_actions run
+# and can serve Markdown, enforce strict_accept, or emit Vary: Accept
+# regardless of how the client phrased its Accept header.
+Discourse::Application.routes.append { get "/" => "list#latest" }
+
 after_initialize do
   Mime::Type.register "text/markdown", :md unless Mime::Type.lookup_by_extension(:md)
 

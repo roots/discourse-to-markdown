@@ -54,14 +54,14 @@ module DiscourseToMarkdown
           query.public_send("list_#{filter_name}")
         end
 
-      render plain:
-               TopicListRenderer.render(
-                 topics: list.topics,
-                 title: topic_list_title(filter_name, list_opts),
-                 request_path: request.path,
-                 page: params[:page],
-               ),
-             content_type: "text/markdown"
+      render_markdown(
+        TopicListRenderer.render(
+          topics: list.topics,
+          title: topic_list_title(filter_name, list_opts),
+          request_path: request.path,
+          page: params[:page],
+        ),
+      )
     end
 
     # `/c/:slug/:id` routes to `category_default`, which dispatches to the

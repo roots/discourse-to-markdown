@@ -25,7 +25,7 @@ module DiscourseToMarkdown
 
       raise Discourse::NotFound if params[:post_number].present? && renderer.visible_posts.empty?
 
-      render plain: renderer.render, content_type: "text/markdown"
+      render_markdown(renderer.render)
     end
   end
 end

@@ -22,14 +22,14 @@ module DiscourseToMarkdown
 
       list = TopicQuery.new(current_user).list_topics_by(user)
 
-      render plain:
-               TopicListRenderer.render(
-                 topics: list.topics,
-                 title: "@#{user.username} — Activity",
-                 request_path: request.path,
-                 page: params[:page],
-               ),
-             content_type: "text/markdown"
+      render_markdown(
+        TopicListRenderer.render(
+          topics: list.topics,
+          title: "@#{user.username} — Activity",
+          request_path: request.path,
+          page: params[:page],
+        ),
+      )
     end
   end
 end
