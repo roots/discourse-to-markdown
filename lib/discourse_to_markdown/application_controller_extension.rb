@@ -6,12 +6,16 @@ module DiscourseToMarkdown
 
     included { before_action :resolve_markdown_preference }
 
-    # Maps the current request path to its Markdown-alternate URL. The home
-    # route `/` becomes `/latest.md` (the middleware rejects `/.md` because
-    # there's no content segment before the suffix); other paths get `.md`
-    # appended after trimming any trailing slash.
+    # Maps the current request path to its absolute Markdown-alternate URL.
+    # The home route `/` becomes `/latest.md` (the middleware rejects `/.md`
+    # because there's no content segment before the suffix); other paths get
+    # `.md` appended after trimming any trailing slash. Absolute URLs match
+    # Discourse's own `<link rel="canonical">` convention and stay
+    # unambiguous when crawlers, feed readers, or LLMs consume the link
+    # out-of-context.
     def markdown_alternate_url_for(path = request.path)
-      path == "/" ? "/latest.md" : "#{path.chomp("/")}.md"
+      relative = path == "/" ? "/latest.md" : "#{path.chomp("/")}.md"
+      "#{Discourse.base_url}#{relative}"
     end
 
     private

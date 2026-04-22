@@ -58,7 +58,7 @@ RSpec.describe "Markdown negotiation" do
 
       it "advertises the Markdown sibling via <link rel='alternate'> in <head>" do
         expect(response.body).to include(
-          %(<link rel="alternate" type="text/markdown" href="/t/#{topic.slug}/#{topic.id}.md">),
+          %(<link rel="alternate" type="text/markdown" href="#{Discourse.base_url}/t/#{topic.slug}/#{topic.id}.md">),
         )
       end
     end
@@ -213,7 +213,7 @@ RSpec.describe "Markdown negotiation" do
     it "injects an <atom:link> for Markdown into /latest.rss" do
       get "/latest.rss"
       expect(response.body).to include(
-        %(<atom:link href="/latest.md" rel="alternate" type="text/markdown" />),
+        %(<atom:link href="#{Discourse.base_url}/latest.md" rel="alternate" type="text/markdown" />),
       )
     end
   end
