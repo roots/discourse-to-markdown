@@ -63,17 +63,17 @@ curl https://example.com/tag/announcements.md
 Every HTML response on a supported route advertises the Markdown sibling two ways:
 
 ```
-Link: </t/welcome/5.md>; rel="alternate"; type="text/markdown"
+Link: <https://example.com/t/welcome/5.md>; rel="alternate"; type="text/markdown"
 ```
 
 ```html
-<link rel="alternate" type="text/markdown" href="/t/welcome/5.md">
+<link rel="alternate" type="text/markdown" href="https://example.com/t/welcome/5.md">
 ```
 
 RSS feeds (`/latest.rss`, `/top.rss`, etc.) also carry an `<atom:link>` pointing at the Markdown equivalent so feed readers and LLMs can discover it:
 
 ```xml
-<atom:link href="/latest.md" rel="alternate" type="text/markdown" />
+<atom:link href="https://example.com/latest.md" rel="alternate" type="text/markdown" />
 ```
 
 ### Supported routes
