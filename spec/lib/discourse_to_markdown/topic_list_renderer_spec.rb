@@ -105,21 +105,6 @@ RSpec.describe DiscourseToMarkdown::TopicListRenderer do
     end
   end
 
-  describe "footer" do
-    it "is omitted when the list is shorter than a full page" do
-      expect(render).not_to include("More topics on page")
-    end
-
-    it "hints at the next page when the list is full (PER_PAGE topics)" do
-      full_page =
-        Array.new(described_class::PER_PAGE) do |i|
-          FakeTopic.new("Topic #{i}", "/t/t/#{i}", alice, posted_at, "x")
-        end
-      expect(render(topics: full_page)).to include("More topics on page 2")
-      expect(render(topics: full_page)).to include("?page=2")
-    end
-  end
-
   describe "with an empty list" do
     it "still renders the header" do
       out = render(topics: [])

@@ -2,8 +2,6 @@
 
 module DiscourseToMarkdown
   class TopicListRenderer
-    PER_PAGE = 30
-
     def self.render(**kwargs)
       new(**kwargs).render
     end
@@ -16,7 +14,7 @@ module DiscourseToMarkdown
     end
 
     def render
-      sections = [header, topics_section, footer].reject { |s| s.nil? || s.empty? }
+      sections = [header, topics_section].reject { |s| s.nil? || s.empty? }
       sections.join("\n\n") + "\n"
     end
 
@@ -58,12 +56,6 @@ module DiscourseToMarkdown
       end
 
       lines.join("\n")
-    end
-
-    def footer
-      return nil if @topics.size < PER_PAGE
-
-      "_More topics on page #{@page + 1}. Append `?page=#{@page + 1}` to the URL._"
     end
   end
 end
